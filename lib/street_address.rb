@@ -508,7 +508,22 @@ module StreetAddress
       "washington" => "WA",
       "west virginia" => "WV",
       "wisconsin" => "WI",
-      "wyoming" => "WY"
+      "wyoming" => "WY",
+
+      # canadian provinces and territories
+      "alberta" => "AB",
+      "british columbia" => "BC",
+      "manitoba" => "MN",
+      "saskatchewan" => "SK",
+      "ontario" => "ON",
+      "quebec" => "QC",
+      "nova scotia" => "NS",
+      "new brunswick" => "NB",
+      "prince edward island" => "PEI",
+      "newfoundland" => "NF",
+      "nunavut" => "NU",
+      "northwest territories" => "NT",
+      "yukon" => "YT"
     }
 
     STATE_NAMES = STATE_CODES.invert
@@ -607,7 +622,8 @@ module StreetAddress
         f = x.gsub(/(\w)/, '\1.')
         [Regexp::quote(f), Regexp::quote(x)] 
       }.join("|")
-    self.zip_regexp = '(\d{5})(?:-?(\d{4})?)'
+    # self.zip_regexp = '(\d{5})(?:-?(\d{4})?)' # added Canadian postal code matching
+    self.zip_regexp = '(\d{5})(?:-?(\d{4})?)|([a-zA-Z][0-9][a-zA-Z][ ]?[0-9][a-zA-Z][0-9])' # added Canadian postal code matching
     self.corner_regexp = '(?:\band\b|\bat\b|&|\@)'
     self.unit_regexp = '(?:(su?i?te|p\W*[om]\W*b(?:ox)?|dept|apt|apartment|ro*m|fl|unit|box)\W+|\#\W*)([\w-]+)'
     self.street_regexp = 
@@ -738,7 +754,7 @@ module StreetAddress
            :prefix => match[4],
            :city => match[15],
            :state => match[16],
-           :postal_code => match[17],
+           :postal_code => match[17] || match[19],
            :postal_code_ext => match[18]
            )
         )

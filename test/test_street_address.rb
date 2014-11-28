@@ -15,7 +15,26 @@ class StreetAddressUsTest < Test::Unit::TestCase
     @int2 = "Hollywood Blvd and Vine St, Los Angeles, CA"
     @int3 = "Mission Street at Valencia Street, San Francisco, CA"
 
+    # Canadian Addresses
+    @addr7 = "67 Yonge St Toronto ON M5E 1J8"
+    @addr8 = "67 Yonge St Suite 1600 Toronto ON M5E 1J8"
   end
+
+  def test_canadian_province
+    addr = StreetAddress::US.parse(@addr8)
+    assert_equal "ON", addr.state
+  end
+
+  def test_canadian_postal_code_with_space
+    addr = StreetAddress::US.parse(@addr7, informal: true)
+    assert_equal "M5E 1J8", addr.postal_code
+  end
+
+  def test_canadian_postal_code_without_space
+    addr = StreetAddress::US.parse(@addr8)
+    assert_equal "M5E 1J8", addr.postal_code
+  end
+
 
   def test_zip_plus_4_with_dash
     addr = StreetAddress::US.parse("2730 S Veitch St, Arlington, VA 22206-3333")
@@ -97,7 +116,7 @@ class StreetAddressUsTest < Test::Unit::TestCase
     assert_equal addr.street2, nil
 
 
- 
+
     addr = StreetAddress::US.parse(@addr4)
     assert_equal addr.number, "1005"
     assert_equal addr.postal_code, "95472"
@@ -111,11 +130,11 @@ class StreetAddressUsTest < Test::Unit::TestCase
     assert_equal addr.street2, nil
     assert_equal addr.suffix, "N"
 
-  
+
     addr = StreetAddress::US.parse(@addr5)
     assert_equal addr, nil
-    
-    
+
+
     addr = StreetAddress::US.parse(@addr6)
     assert_equal("207", addr.unit)
 
@@ -150,8 +169,8 @@ class StreetAddressUsTest < Test::Unit::TestCase
     assert_equal addr.intersection?, true
     assert_equal addr.street_type, "St"
     assert_equal addr.street_type2, "St"
-    
-    parseable = ["1600 Pennsylvania Ave Washington DC 20006", 
+
+    parseable = ["1600 Pennsylvania Ave Washington DC 20006",
           "1600 Pennsylvania Ave #400, Washington, DC, 20006",
           "1600 Pennsylvania Ave Washington, DC",
           "1600 Pennsylvania Ave #400 Washington DC",
@@ -165,7 +184,7 @@ class StreetAddressUsTest < Test::Unit::TestCase
           "Hollywood & Vine, Los Angeles, CA, 90028",
           "Hollywood Blvd and Vine St, Los Angeles, CA, 90028",
           "Mission Street at Valencia Street, San Francisco, CA, 90028"]
-    
+
     parseable.each do |location|
       assert_not_nil(StreetAddress::US.parse(location), location + " was not parse able")
     end
