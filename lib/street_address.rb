@@ -776,7 +776,7 @@ module StreetAddress
            :prefix => match[4],
            :city => match[15],
            :state => match[16],
-           :postal_code => match[17],
+           :postal_code => match[17] || match[19],
            :postal_code_ext => match[18]
            )
         )
