@@ -341,6 +341,7 @@ module StreetAddress
       "rapid" => "rpd",
       "rapids" => "rpds",
       "rdge" => "rdg",
+      "real" => "real",
       "rest" => "rst",
       "ridge" => "rdg",
       "ridges" => "rdgs",
